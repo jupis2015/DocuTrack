@@ -20,7 +20,7 @@ El proyecto fue desarrollado en Python utilizando una arquitectura MVC
 
 | Integrante | Responsabilidad |
 |---|---|
-| NOMBRE INTEGRANTE 1 | Desarrollo del Model y estructura del BST |
+| HENRY FRANCO VELEZ | Desarrollo del Model y estructura del BST |
 | NOMBRE INTEGRANTE 2 | Desarrollo de View, impresión ASCII y pruebas |
 | NOMBRE INTEGRANTE 3 | Controller, documentación y pruebas finales |
 
