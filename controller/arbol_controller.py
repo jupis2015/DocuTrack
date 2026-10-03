@@ -3,17 +3,11 @@ from view.arbol_view import ArbolView
 
 
 class ArbolController:
-
     def __init__(self):
         self.arbol = ArbolBinario()
         self.view = ArbolView()
 
-    # ==================================================
-    # EJECUCIÓN PRINCIPAL
-    # ==================================================
-
     def ejecutar(self):
-
         self.view.mostrar_titulo(
             "DOCUTRACK S.A. - ÁRBOL BINARIO DE BÚSQUEDA"
         )
@@ -25,45 +19,38 @@ class ArbolController:
         self.mostrar_recorridos()
         self.mostrar_altura()
 
-        self.view.mostrar_titulo(
-            "FIN DE LAS PRUEBAS"
-        )
+        self.view.mostrar_titulo("FIN DE LAS PRUEBAS")
 
-    # ==================================================
+    # ==========================================================
     # 1. CONSTRUCCIÓN DEL ÁRBOL
-    # ==================================================
+    # ==========================================================
 
     def construir_arbol(self):
+        self.view.mostrar_titulo("1. CONSTRUCCIÓN DEL ÁRBOL")
 
-        self.view.mostrar_titulo(
-            "1. CONSTRUCCIÓN DEL ÁRBOL"
-        )
-
-        # 14 nodos: mezcla de carpetas y archivos.
-        # Fueron seleccionados para generar:
-        # - raíz con dos subárboles
-        # - nodos hoja
-        # - nodos con un solo hijo
-        # - nodos con dos hijos
+        # True  = Carpeta
+        # False = Archivo
+        #
+        # Los nodos que tendrán hijos se definen como carpetas.
+        # Los archivos se mantienen como nodos hoja.
         datos = [
             ("Documentos", True),
             ("Clientes", True),
             ("Proyectos", True),
             ("Archivos", True),
-            ("Contratos", False),
-            ("Informes", False),
+            ("Contratos", True),
+            ("Informes", True),
             ("Ventas", True),
             ("Backup", True),
-            ("Compras", False),
-            ("Reportes", False),
-            ("Usuarios", True),
-            ("Zonas", True),
-            ("Cartas", False),
+            ("Compras", True),
+            ("Reportes", True),
+            ("Usuarios", False),
+            ("Zonas", False),
+            ("Cartas", True),
             ("Configuracion", False)
         ]
 
         for nombre, es_carpeta in datos:
-
             insertado, comparaciones = self.arbol.insertar(
                 nombre,
                 es_carpeta
@@ -75,28 +62,18 @@ class ArbolController:
                 comparaciones
             )
 
-        self.view.mostrar_arbol(
-            self.arbol.raiz
-        )
+        self.view.mostrar_arbol(self.arbol.raiz)
 
-    # ==================================================
-    # 2. BÚSQUEDAS RÁPIDAS
-    # ==================================================
+    # ==========================================================
+    # 2. BÚSQUEDAS
+    # ==========================================================
 
     def realizar_busquedas(self):
+        self.view.mostrar_titulo("2. BÚSQUEDAS RÁPIDAS")
 
-        self.view.mostrar_titulo(
-            "2. BÚSQUEDAS RÁPIDAS"
-        )
-
-        # 2 existentes del subárbol izquierdo:
-        # Archivos y Contratos
-        #
-        # 2 existentes del subárbol derecho:
-        # Informes y Ventas
-        #
-        # 2 inexistentes:
-        # Nomina y Seguridad
+        # Dos búsquedas hacia el subárbol izquierdo.
+        # Dos hacia el subárbol derecho.
+        # Dos elementos inexistentes.
         busquedas = [
             "Archivos",
             "Contratos",
@@ -107,10 +84,7 @@ class ArbolController:
         ]
 
         for nombre in busquedas:
-
-            nodo, comparaciones = self.arbol.buscar(
-                nombre
-            )
+            nodo, comparaciones = self.arbol.buscar(nombre)
 
             self.view.mostrar_busqueda(
                 nombre,
@@ -118,29 +92,25 @@ class ArbolController:
                 comparaciones
             )
 
-    # ==================================================
-    # 3. ACTUALIZACIONES SELECTIVAS
-    # ==================================================
+    # ==========================================================
+    # 3. ACTUALIZACIONES
+    # ==========================================================
 
     def realizar_actualizaciones(self):
-
         self.view.mostrar_titulo(
             "3. ACTUALIZACIONES SELECTIVAS"
         )
 
-        # --------------------------------------------------
-        # ACTUALIZACIÓN 1:
-        # Nodo hoja
-        # Cartas -> Certificados
-        # --------------------------------------------------
-
+        # ------------------------------------------------------
+        # Actualización de un archivo hoja
+        # ------------------------------------------------------
         self.view.mostrar_subtitulo(
-            "Actualización de nodo hoja"
+            "Actualización de archivo hoja"
         )
 
         exito, mensaje = self.arbol.actualizar(
-            "Cartas",
-            "Certificados"
+            "Configuracion",
+            "Consultas"
         )
 
         self.view.mostrar_actualizacion(
@@ -152,12 +122,9 @@ class ArbolController:
             self.arbol.raiz
         )
 
-        # --------------------------------------------------
-        # ACTUALIZACIÓN 2:
-        # Nodo con un único hijo
-        # Backup -> Biblioteca
-        # --------------------------------------------------
-
+        # ------------------------------------------------------
+        # Actualización de nodo con un hijo
+        # ------------------------------------------------------
         self.view.mostrar_subtitulo(
             "Actualización de nodo con un hijo"
         )
@@ -176,15 +143,9 @@ class ArbolController:
             self.arbol.raiz
         )
 
-        # --------------------------------------------------
-        # ACTUALIZACIÓN 3:
-        # Actualización de la raíz.
-        #
-        # IMPORTANTE:
-        # Se obtiene el nombre actual de la raíz y se
-        # actualiza mediante Eliminar + Insertar.
-        # --------------------------------------------------
-
+        # ------------------------------------------------------
+        # Actualización de la raíz
+        # ------------------------------------------------------
         self.view.mostrar_subtitulo(
             "Actualización de la raíz"
         )
@@ -205,33 +166,28 @@ class ArbolController:
             self.arbol.raiz
         )
 
-    # ==================================================
-    # 4. ELIMINACIONES SELECTIVAS
-    # ==================================================
+    # ==========================================================
+    # 4. ELIMINACIONES
+    # ==========================================================
 
     def realizar_eliminaciones(self):
-
         self.view.mostrar_titulo(
             "4. ELIMINACIONES SELECTIVAS"
         )
 
-        # --------------------------------------------------
-        # ELIMINACIÓN 1:
-        # Nodo hoja
-        #
-        # Configuracion no tiene hijos.
-        # --------------------------------------------------
-
+        # ------------------------------------------------------
+        # Eliminación de nodo hoja
+        # ------------------------------------------------------
         self.view.mostrar_subtitulo(
             "Eliminación de nodo hoja"
         )
 
         exito, caso = self.arbol.eliminar(
-            "Configuracion"
+            "Consultas"
         )
 
         self.view.mostrar_eliminacion(
-            "Configuracion",
+            "Consultas",
             exito,
             caso
         )
@@ -240,33 +196,20 @@ class ArbolController:
             self.arbol.raiz
         )
 
-        # --------------------------------------------------
-        # ELIMINACIÓN 2:
-        # Nodo con UN hijo
-        #
-        # Después de las actualizaciones:
-        #
-        # Archivos
-        #     └── Certificados
-        #             └── Biblioteca
-        #
-        # Por lo tanto, Certificados tiene exactamente
-        # un hijo: Biblioteca.
-        #
-        # Al eliminar Certificados, Biblioteca debe quedar
-        # conectado directamente con Archivos.
-        # --------------------------------------------------
-
+        # ------------------------------------------------------
+        # Eliminación de nodo con un hijo
+        # Reportes tiene como hijo a Usuarios.
+        # ------------------------------------------------------
         self.view.mostrar_subtitulo(
             "Eliminación de nodo con un hijo"
         )
 
         exito, caso = self.arbol.eliminar(
-            "Certificados"
+            "Reportes"
         )
 
         self.view.mostrar_eliminacion(
-            "Certificados",
+            "Reportes",
             exito,
             caso
         )
@@ -275,20 +218,11 @@ class ArbolController:
             self.arbol.raiz
         )
 
-        # --------------------------------------------------
-        # ELIMINACIÓN 3:
-        # Eliminación de la raíz
-        #
-        # Se obtiene dinámicamente el nombre de la raíz
-        # porque después de las actualizaciones puede
-        # haber cambiado.
-        #
-        # La raíz tiene dos hijos, por lo que el Model
-        # utilizará el sucesor.
-        # --------------------------------------------------
-
+        # ------------------------------------------------------
+        # Eliminación de la raíz con dos hijos
+        # ------------------------------------------------------
         self.view.mostrar_subtitulo(
-            "Eliminación de la raíz"
+            "Eliminación de la raíz con dos hijos"
         )
 
         nombre_raiz = self.arbol.raiz.nombre
@@ -307,48 +241,40 @@ class ArbolController:
             self.arbol.raiz
         )
 
-    # ==================================================
-    # 5. RECORRIDOS DE VERIFICACIÓN
-    # ==================================================
+    # ==========================================================
+    # 5. RECORRIDOS
+    # ==========================================================
 
     def mostrar_recorridos(self):
-
         self.view.mostrar_titulo(
             "5. RECORRIDOS DE VERIFICACIÓN"
         )
 
-        # PREORDEN
         self.view.mostrar_recorrido(
             "Preorden",
             self.arbol.preorden()
         )
 
-        # INORDEN
-        # Este recorrido permite verificar que el BST
-        # continúa correctamente ordenado.
         self.view.mostrar_recorrido(
             "Inorden",
             self.arbol.inorden()
         )
 
-        # POSTORDEN
         self.view.mostrar_recorrido(
             "Postorden",
             self.arbol.postorden()
         )
 
-        # POR NIVELES
         self.view.mostrar_recorrido(
             "Por niveles",
             self.arbol.por_niveles()
         )
 
-    # ==================================================
-    # 6. ALTURA FINAL
-    # ==================================================
+    # ==========================================================
+    # 6. ALTURA
+    # ==========================================================
 
     def mostrar_altura(self):
-
         self.view.mostrar_titulo(
             "6. MÉTRICAS FINALES"
         )
